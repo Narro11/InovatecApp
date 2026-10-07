@@ -10,12 +10,16 @@ class Campo {
         final String columna, etiqueta;
         // Número máximo de caracteres admitidos en este campo.
         final int longitud;
+        
+        // CORRECCIÓN: Se quitó la palabra 'final' para poder hacer campos opcionales
         // true exige un valor; false permite dejarlo vacío.
-        final boolean obligatorio;
+        boolean obligatorio;
+        
         // Activa el filtro de dígitos y el envío del dato como NUMERIC a JDBC.
         boolean numerico;
         // Para combos: tabla consultada y nombre de su clave primaria.
         String tabla, pk;
+        
         // Constructor: guarda la columna SQL, etiqueta, longitud máxima y obligatoriedad.
         Campo(String columna, String etiqueta, int longitud, boolean obligatorio) {
             this.columna = columna; this.etiqueta = etiqueta;
@@ -26,6 +30,7 @@ class Campo {
     static Campo texto(String columna, String etiqueta, int longitud, boolean obligatorio) {
         return new Campo(columna, etiqueta, longitud, obligatorio);
     }
+    
     // Crea un campo obligatorio de tipo combo, asociado con la clave de otra tabla.
     static Campo referencia(String columna, String etiqueta, String tabla, String pk) {
         Campo c = new Campo(columna, etiqueta, 10, true);

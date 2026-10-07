@@ -125,23 +125,28 @@ final class DisenoFormulario {
         f.espera = new javax.swing.Timer(650, e -> OperacionesFormulario.buscarIdAutomaticamente(f));
         // El temporizador se ejecuta una sola vez por cada reinicio.
         f.espera.setRepeats(false);
-        JTextField id = (JTextField) f.entradas[0];
-        id.getDocument().addDocumentListener(new DocumentListener() {
-            // Invalida búsquedas anteriores y reinicia el temporizador al modificar el ID manualmente.
-            private void cambio() {
-                if (f.ajustando) return;
-                f.revision++;
-                f.idCargado = null;
-                f.espera.restart();
-            }
-            // Notifica que se agregaron caracteres al ID.
-            public void insertUpdate(DocumentEvent e) { cambio(); }
-            // Notifica que se quitaron caracteres del ID.
-            public void removeUpdate(DocumentEvent e) { cambio(); }
-            // Notifica cambios de atributos del documento; en texto simple normalmente no se utiliza.
-            public void changedUpdate(DocumentEvent e) { cambio(); }
-        });
-        id.addActionListener(e -> OperacionesFormulario.buscarRegistro(f));
+        
+        // VALIDACIÓN DE SEGURIDAD: Solo aplicar si el primer componente es un JTextField
+        if (f.entradas.length > 0 && f.entradas[0] instanceof javax.swing.JTextField) {
+            javax.swing.JTextField id = (javax.swing.JTextField) f.entradas[0];
+            
+            id.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
+                // Invalida búsquedas anteriores y reinicia el temporizador al modificar el ID manualmente.
+                private void cambio() {
+                    if (f.ajustando) return;
+                    f.revision++;
+                    f.idCargado = null;
+                    f.espera.restart();
+                }
+                // Notifica que se agregaron caracteres al ID.
+                public void insertUpdate(javax.swing.event.DocumentEvent e) { cambio(); }
+                // Notifica que se quitaron caracteres del ID.
+                public void removeUpdate(javax.swing.event.DocumentEvent e) { cambio(); }
+                // Notifica cambios de atributos del documento; en texto simple normalmente no se utiliza.
+                public void changedUpdate(javax.swing.event.DocumentEvent e) { cambio(); }
+            });
+            id.addActionListener(e -> OperacionesFormulario.buscarRegistro(f));
+        }
     }
 
     // Coloca una etiqueta y su control en una fila del GridBagLayout; devuelve el índice de la siguiente fila.

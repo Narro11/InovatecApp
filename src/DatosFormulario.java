@@ -48,7 +48,7 @@ final class DatosFormulario {
         DatosFormulario.llenarCombo(DatosFormulario.obtenerCombo(f, 2), filtradas, id);
     }
 
-    // Detiene búsquedas pendientes, vacía campos y selección, desbloquea el ID y solicita el foco inicial.
+   // Detiene búsquedas pendientes, vacía campos y selección, desbloquea el ID y solicita el foco inicial.
     static void limpiarFormulario(Formulario f) {
         // Cancela el temporizador y cambia la revisión para descartar resultados antiguos.
         f.espera.stop(); f.revision++; f.ajustando = true; f.idCargado = null;
@@ -56,7 +56,16 @@ final class DatosFormulario {
             if (c instanceof JTextField) ((JTextField) c).setText("");
             else if (((JComboBox<?>) c).getItemCount() > 0) ((JComboBox<?>) c).setSelectedIndex(0);
         }
-        ((JTextField) f.entradas[0]).setEditable(true);
+        
+        // CORRECCIÓN: Valida el tipo de componente antes de desbloquearlo
+        if (f.entradas.length > 0) {
+            if (f.entradas[0] instanceof JTextField) {
+                ((JTextField) f.entradas[0]).setEditable(true);
+            } else {
+                f.entradas[0].setEnabled(true);
+            }
+        }
+        
         if (f.filtraMunicipios) {
             if (f.filtroEstado.getItemCount() > 0) f.filtroEstado.setSelectedIndex(0);
             DatosFormulario.filtrarMunicipios(f, "");
@@ -89,8 +98,16 @@ final class DatosFormulario {
         }
         // Recuerda la clave de la fila que está cargada para comprobar futuras actualizaciones.
         f.idCargado = datos[0];
-        // Bloquea la clave primaria del registro cargado; Nuevo/Limpiar permite escribir otra.
-        ((JTextField) f.entradas[0]).setEditable(false);
+        
+        // CORRECCIÓN: Valida el tipo de componente antes de bloquearlo
+        if (f.entradas.length > 0) {
+            if (f.entradas[0] instanceof JTextField) {
+                ((JTextField) f.entradas[0]).setEditable(false);
+            } else {
+                f.entradas[0].setEnabled(false);
+            }
+        }
+        
         f.ajustando = false;
         f.estado.setText("Registro cargado. Puedes actualizarlo o eliminarlo. Usa Nuevo para otro ID.");
     }

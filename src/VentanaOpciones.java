@@ -39,7 +39,7 @@ public class VentanaOpciones extends JFrame {
         pestanas.addTab("Proyectos", new PanelProyecto());
         pestanas.addTab("Equipos", new PanelEquipo());
         pestanas.addTab("Inscripciones", new PanelRegistro());
-        //pestanas.addTab("Asesores", new PanelRegistroAsesor());
+        pestanas.addTab("Asesores", new PanelRegistroAsesor());
 
         // Pestañas que SOLO ve el Administrador
         if ("Administrador".equals(rolUsuario)) {
@@ -49,6 +49,11 @@ public class VentanaOpciones extends JFrame {
             pestanas.addTab("Campus", new PanelCampus());
             pestanas.addTab("Carreras", new PanelCarreras());
             pestanas.addTab("Personas externas", new PanelPersonaExterna());
+            pestanas.addTab("Ediciones", new PanelEdicion());
+            pestanas.addTab("Patrocinadores", new PanelPatrocinador());
+            pestanas.addTab("Jueces", new PanelJuez());
+            pestanas.addTab("Staff", new PanelStaf());
+            pestanas.addTab("Reporte General", new PanelReportes());
         }
     }
 
