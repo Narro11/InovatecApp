@@ -10,7 +10,7 @@ import javax.swing.*;
 public class VentanaOpciones extends JFrame {
     private final JTabbedPane pestanas = new JTabbedPane();
 
-    // Constructor: configura la ventana, crea las pestañas y programa la carga inicial.
+   // Constructor: configura la ventana, crea las pestañas y programa la carga inicial.
     // MODIFICACIÓN: Ahora recibe el String rolUsuario
     public VentanaOpciones(String rolUsuario) {
         super("Inovatec - Administración de registros (" + rolUsuario + ")");
@@ -18,10 +18,33 @@ public class VentanaOpciones extends JFrame {
         setSize(1120, 760);
         setMinimumSize(new Dimension(880, 640));
         setLocationRelativeTo(null);
+        
+        // --- CONTENEDOR SUPERIOR (Título + Botón) ---
+        JPanel panelNorte = new JPanel(new BorderLayout());
+        
+        // 1. Título original (Lado Izquierdo)
         JLabel titulo = new JLabel("INOVATEC  |  Administración de registros");
         titulo.setFont(new Font("SansSerif", Font.BOLD, 22));
         titulo.setBorder(BorderFactory.createEmptyBorder(18, 20, 18, 20));
-        add(titulo, BorderLayout.NORTH);
+        panelNorte.add(titulo, BorderLayout.WEST);
+        
+        // 2. Botón de Cerrar Sesión (Lado Derecho)
+        JPanel panelBoton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panelBoton.setBorder(BorderFactory.createEmptyBorder(18, 0, 18, 20)); // Márgenes para alinear con el título
+        JButton btnCerrarSesion = new JButton("Cerrar Sesión");
+        
+        // Acción del botón
+        btnCerrarSesion.addActionListener(e -> {
+            this.dispose(); // Cierra esta ventana
+            // Vuelve a abrir el Login
+            SwingUtilities.invokeLater(() -> new Login().setVisible(true));
+        });
+        
+        panelBoton.add(btnCerrarSesion);
+        panelNorte.add(panelBoton, BorderLayout.EAST);
+        
+        // Agregamos el contenedor al NORTE de la ventana principal
+        add(panelNorte, BorderLayout.NORTH);
         add(pestanas, BorderLayout.CENTER);
         
         // Pasamos el rol al método que crea las pestañas
@@ -54,6 +77,7 @@ public class VentanaOpciones extends JFrame {
             pestanas.addTab("Jueces", new PanelJuez());
             pestanas.addTab("Staff", new PanelStaf());
             pestanas.addTab("Reporte General", new PanelReportes());
+            pestanas.addTab("Categorías de proyecto", new PanelCategoriaProyecto());
         }
     }
 
